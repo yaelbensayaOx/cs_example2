@@ -8,8 +8,13 @@ namespace CommandInjectionExample1
     {
         static void Main(string[] args)
         {
+            if (!HttpContext.Current.User.IsInRole("Admin"))
+            {
+                return;
+            }
+
             // Simulating web request input
-            string userCommand = Request.QueryString["cmd"]; // Source: Request.QueryString
+            string userCommand = HttpContext.Current.Request.QueryString["cmd"]; // Source: Request.QueryString
 
             // Vulnerable: Directly passing user input to Process.Start
             Process.Start(userCommand); // Sink: Process.Start()
